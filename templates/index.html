@@ -1,181 +1,204 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>성적 조회</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f4f8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>성적 조회</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
 
-        .banner {
-            width: 100%;
-            height: 200px;
-            background-image: url('https://your-image-url.com/banner.jpg'); /* 👉 배너 이미지 URL로 교체 */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            margin-bottom: 20px;
-        }
+    .banner {
+      width: 100%;
+      height: 200px;
+      background-image: url('https://ifh.cc/g/sQKvoB.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-bottom: 20px;
+    }
 
-        h1 {
-            color: #333;
-            font-size: 32px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    h1 {
+      color: #333;
+      font-size: 32px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
+    form {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
 
-        label {
-            font-weight: 600;
-            color: #555;
-            display: block;
-            margin-bottom: 8px;
-        }
+    label {
+      font-weight: 600;
+      color: #555;
+      display: block;
+      margin-bottom: 8px;
+    }
 
-        input[type="text"], input[type="date"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            color: #333;
-        }
+    input[type="text"], select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      color: #333;
+    }
 
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 50px; /* 동그란 버튼 */
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .birth-selects {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+    .birth-selects select {
+      flex: 1;
+    }
 
-        #result {
-            margin-top: 20px;
-            text-align: center;
-        }
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-        #result p {
-            font-size: 18px;
-            color: #007bff;
-        }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
 
-        /* 페이지 전체 덮개 */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            display: none;
-        }
-    </style>
+    #result {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #result p {
+      font-size: 18px;
+      color: #007bff;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      display: none;
+    }
+
+    small {
+      display: block;
+      margin-top: -10px;
+      margin-bottom: 15px;
+      color: #888;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-    <!-- 페이지 덮개 -->
-    <div class="overlay" id="overlay"></div>
+  <div class="overlay" id="overlay"></div>
 
-    <!-- 배너 이미지 -->
-    <div class="banner"></div>
+  <div class="banner"></div>
 
-    <h1>2025 브레인사고력 올림피아드 <br/> 성적 조회 <br/></h1>
-    <form id="scoreForm">
-        <label for="name">이름:</label>
-        <input type="text" id="name" name="name" required>
-        <br>
-        <label for="birthdate">생년월일:</label>
-        <input type="date" max="9999-12-31" id="birthdate" name="birthdate" required>
-        <br>
-        <input type="submit" value="조회" class="round-button">
-    </form>
+  <h1>2025 브레인사고력 올림피아드 <br/> 성적 조회 <br/></h1>
+  <form id="scoreForm">
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" required>
 
-    <div id="result"></div>
+    <label>생년월일:</label>
+    <div class="birth-selects">
+      <select id="year" required></select>
+      <select id="month" required></select>
+      <select id="day" required></select>
+    </div>
+    <small>※ 연도, 월, 일을 선택해 주세요</small>
 
-    <script>
-        $(document).ready(function () {
-            // 생년월일 자동 '-' 입력
-            $('#birthdate').on('input', function () {
-                const value = $(this).val();
-                if (value.length === 4 || value.length === 7) {
-                    $(this).val(value + "-");
-                }
+    <input type="submit" value="조회" class="round-button">
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    // 날짜 select 초기화
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1900; y--) {
+      $('#year').append(`<option value="${y}">${y}</option>`);
+    }
+    for (let m = 1; m <= 12; m++) {
+      const mm = String(m).padStart(2, '0');
+      $('#month').append(`<option value="${mm}">${mm}</option>`);
+    }
+    for (let d = 1; d <= 31; d++) {
+      const dd = String(d).padStart(2, '0');
+      $('#day').append(`<option value="${dd}">${dd}</option>`);
+    }
+
+    $('#scoreForm').on('submit', function (e) {
+      e.preventDefault();
+
+      const name = $('#name').val();
+      const birthdate = `${$('#year').val()}-${$('#month').val()}-${$('#day').val()}`;
+
+      $.post('/get_score', { name: name, birthdate: birthdate }, function (data) {
+        let result = $('#result');
+        result.empty();
+
+        if (data.score !== '없음') {
+          result.append(`<p>응시 분야: ${data.category}</p>`);
+          result.append(`<p>점수: ${data.score}점 (200점 만점)</p>`);
+
+          if (data.award) {
+            $('#overlay').show();
+
+            Swal.fire({
+              title: '2025 브레인사고력올림피아드',
+              html: `
+                <div style="font-size: 24px; font-weight: bold; color: #d9534f; margin-top: 10px;">
+                  ${data.award}
+                </div>
+                <div style="margin-top: 10px;">
+                  수상을 진심으로 축하드립니다! <br>
+                  본선 대회 참석 대상자입니다.
+                </div>
+              `,
+              imageUrl: 'https://ifh.cc/g/sQKvoB.png',
+              background: '#f5f5f5',
+              confirmButtonText: '확인',
+              confirmButtonColor: '#3085d6',
+              willClose: () => {
+                $('#overlay').hide();
+              }
             });
-
-            $('#scoreForm').on('submit', function (e) {
-                e.preventDefault();
-
-                $.post('/get_score', $(this).serialize(), function (data) {
-                    let result = $('#result');
-                    result.empty(); // 이전 결과 지우기
-
-                    if (data.score !== '없음') {
-                        result.append(`<p>응시 분야: ${data.category}</p>`);
-                        result.append(`<p>점수: ${data.score}</p>`);
-
-                        if (data.award) {
-                            // 덮개 표시
-                            $('#overlay').show();
-
-                            Swal.fire({
-                                title: '2025 브레인사고력올림피아드',
-                                html: `
-                                    <div style="font-size: 24px; font-weight: bold; color: #d9534f; margin-top: 10px;">
-                                        ${data.award}
-                                    </div>
-                                    <div style="margin-top: 10px;">
-                                        수상을 진심으로 축하드립니다!
-                                    </div>
-                                `,
-                                imageUrl: 'https://ifh.cc/g/sQKvoB.png',
-                                background: '#f5f5f5',
-                                confirmButtonText: '확인',
-                                confirmButtonColor: '#3085d6',
-                                customClass: {
-                                    popup: 'popup-class',
-                                    title: 'title-class',
-                                    content: 'content-class'
-                                },
-                                willClose: () => {
-                                    // 모달이 닫히면 덮개 숨김
-                                    $('#overlay').hide();
-                                }
-                            });
-                        } else result.append(`생각의고수 인재상(참가상) 수상 대상자입니다.`);
-                    } else {
-                        result.append('<p>조회 실패: 해당 정보를 찾을 수 없습니다.</p>');
-                    }
-                });
-            });
-        });
-    </script>
+          } else {
+            result.append(`<p>수고 많으셨습니다.</p>`);
+          }
+        } else {
+          result.append('<p>조회 실패: 해당 정보를 찾을 수 없습니다.</p>');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
